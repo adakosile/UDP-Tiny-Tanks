@@ -1,0 +1,31 @@
+import greenfoot.*;
+public class Missile extends Actor {
+    int bounces;
+    public Missile(int r) {
+        getImage().scale(40,20);
+        setRotation(r);
+        bounces = 0;
+    }
+    public void addedToWorld(World world) {
+        move(60);
+    }
+    public void act() {
+        move(8);
+        Actor a = getOneIntersectingObject(Wall.class);
+        if(a != null) {
+            move(-8);
+            int deltaX = Math.abs( getX() - a.getX() );
+            int deltaY = Math.abs( getY() - a.getY() );
+            bounces++;
+            if(bounces == 3) {
+                getWorld().removeObject(this);
+            }
+            else if(deltaX > deltaY) {
+                setRotation(180-getRotation());
+            }
+            else {
+                setRotation(-getRotation());
+            }
+        }
+    }    
+}
